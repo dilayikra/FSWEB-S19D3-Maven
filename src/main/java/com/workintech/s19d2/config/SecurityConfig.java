@@ -26,7 +26,6 @@ public class SecurityConfig {
     public AuthenticationManager authManager(
             @Qualifier("authenticationService") UserDetailsService userDetailsService
     ) {
-        // @Qualifier sayesinde tam olarak senin AuthenticationService'ini enjekte eder
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
@@ -39,7 +38,6 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/workintech/auth/**").permitAll();
-                    // Rol kontrolleri (USER/ADMIN)
                     auth.requestMatchers(HttpMethod.GET, "/workintech/accounts/**").hasAnyAuthority("USER", "ADMIN");
                     auth.requestMatchers(HttpMethod.POST, "/workintech/accounts/**").hasAuthority("ADMIN");
                     auth.requestMatchers(HttpMethod.PUT, "/workintech/accounts/**").hasAuthority("ADMIN");
